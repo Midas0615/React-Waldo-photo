@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from './reducer';
-// import rootSaga from './sagas';
+import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -10,11 +10,8 @@ const sagaMiddleware = createSagaMiddleware();
 export default function configureStore(initialState = {}) {
   // Create the store with middlewares
   // * sagaMiddleware: Makes redux-sagas work
-  // * requestStatusMiddleware: Handles dispatching request status actions
-  // * TODO: routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
     sagaMiddleware,
-    // routerMiddleware(history),
   ];
   const enhancers = [applyMiddleware(...middlewares)];
 
@@ -34,7 +31,7 @@ export default function configureStore(initialState = {}) {
     composeEnhancers(...enhancers), // enhancers
   );
 
-  // sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(rootSaga);
 
   return store;
 }

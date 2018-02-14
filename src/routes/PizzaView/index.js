@@ -1,10 +1,49 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'components/Intl';
-import { LOGIN_USER_REQUEST } from 'redux/constants';
+import { LIST_PIZZA_REQUEST, GET_PIZZA_REQUEST } from 'redux/constants';
 
 class PizzaView extends Component {
+  static propTypes = {
+    listPizzas: PropTypes.func.isRequired,
+    getPizzaBySize: PropTypes.func.isRequired,
+    pizzas: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.oneOfType([
+          PropTypes.string, PropTypes.number,
+        ]),
+      }),
+    ),
+    pizzaSize: PropTypes.objectOf(
+      PropTypes.shape({
+        name: PropTypes.oneOfType([
+          PropTypes.string, PropTypes.number,
+        ]),
+      }),
+    ),
+  }
+
+  static defaultProps = {
+    pizzas: [
+      {
+        name: 'small',
+      },
+    ],
+    pizzaSize: {
+      name: 'small',
+    },
+  }
+
+  componentDidMount() {
+    const { getPizzaBySize, listPizzas } = this.props;
+    listPizzas();
+    getPizzaBySize();
+  }
+
   render() {
+    console.log('pizzas', this.props.pizzas);
+    console.log('pizzaSize', this.props.pizzaSize);
     return (
       <div>
         adfasdf
@@ -15,12 +54,14 @@ class PizzaView extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentUser: state,
+    pizzas: state.toJS().pizza.pizzas,
+    pizzaSize: state.toJS().pizza.pizzaSize,
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  loginUser: user => dispatch({ type: LOGIN_USER_REQUEST, payload: { user } }),
+  listPizzas: () => dispatch({ type: LIST_PIZZA_REQUEST }),
+  getPizzaBySize: () => dispatch({ type: GET_PIZZA_REQUEST }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PizzaView));
