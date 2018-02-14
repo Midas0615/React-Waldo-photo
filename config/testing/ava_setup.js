@@ -3,23 +3,18 @@
  */
 
 import { JSDOM } from 'jsdom';
-import MemoryStorage from 'memorystorage';
 import mockRequire from 'mock-require';
 import 'babel-register';
 import enzymify from 'expect-enzyme';
 import expectJSX from 'expect-jsx';
 import expect, { spyOn, createSpy } from 'expect';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { shallow, mount } from 'enzyme';
 import dotenv from 'dotenv';
 
 import testRuntimeConfiguration from './testRuntimeConfig.json';
 
 expect.extend(expectJSX);
 expect.extend(enzymify);
-
-Enzyme.configure({ adapter: new Adapter() });
 
 global.testHelper = {
   expect,
@@ -36,9 +31,6 @@ global.testHelper = {
 global.window = new JSDOM('<body></body>').window;
 global.document = window.document;
 global.navigator = window.navigator;
-
-global.localStorage = new MemoryStorage('LOCALSTORAGE-MOCK');
-global.memoryDB = new MemoryStorage('MEMORYDB-MOCK');
 
 // load all env variables
 dotenv.config();
