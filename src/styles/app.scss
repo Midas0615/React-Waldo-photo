@@ -1,0 +1,9 @@
+// Import all styles
+
+@import "./global/index"; // Global Variables
+
+// Import node modules
+@import "node_modules/bootstrap/scss/bootstrap"; // Bootstrap
+
+@import "base/index"; // Base Styles
+@import "components/index"; // Components Styles
