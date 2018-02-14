@@ -14,7 +14,7 @@ import {
   fetchPizzaByName,
 } from '../../graphql/queries/pizzaQueries';
 
-function* listPizzas() {
+function* getAllPizzaSizes() {
   try {
     const response = yield call(client.query, fetchAllPizzasQuery());
     yield put({ type: LIST_PIZZA_SUCCESS, payload: response.data.pizzaSizes });
@@ -23,10 +23,9 @@ function* listPizzas() {
   }
 }
 
-function* getPizzaBySize() {
+function* getPizzaSizeByName() {
   try {
-    const response = yield call(client.query, fetchPizzaByName('MEDIUM'));
-    console.log(response.data);
+    const response = yield call(client.query, fetchPizzaByName('SMALL'));
     yield put({ type: GET_PIZZA_SUCCESS, payload: response.data.pizzaSizeByName });
   } catch (err) {
     yield put({ type: GET_PIZZA_FAILURE, payload: err });
@@ -35,7 +34,7 @@ function* getPizzaBySize() {
 
 export function* pizzaSaga() {
   yield [
-    takeEvery(LIST_PIZZA_REQUEST, listPizzas),
-    takeEvery(GET_PIZZA_REQUEST, getPizzaBySize),
+    takeEvery(LIST_PIZZA_REQUEST, getAllPizzaSizes),
+    takeEvery(GET_PIZZA_REQUEST, getPizzaSizeByName),
   ];
 }

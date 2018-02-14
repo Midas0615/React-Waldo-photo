@@ -8,8 +8,8 @@ import {
 } from '../constants';
 
 const initialState = {
-  pizzas: [],
-  pizzaSize: {},
+  pizzaSizes: [],
+  pizzaSizeByName: {},
   pizzasRequesting: false,
 };
 
@@ -23,7 +23,7 @@ export default function pizza(state = initialState, action) {
     case LIST_PIZZA_SUCCESS:
       return {
         ...state,
-        pizzas: action.payload,
+        pizzaSizes: action.payload,
         pizzasRequesting: false,
       };
     case LIST_PIZZA_FAILURE:
@@ -39,7 +39,7 @@ export default function pizza(state = initialState, action) {
     case GET_PIZZA_SUCCESS:
       return {
         ...state,
-        pizzaSize: action.payload,
+        pizzaSizeByName: action.payload,
         pizzasRequesting: false,
       };
     case GET_PIZZA_FAILURE:

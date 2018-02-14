@@ -19,7 +19,8 @@
     "react-router-dom": "^4.2.2",
     "bootstrap": "^4.0.0-beta.2",
     "apollo-client": "^1.0.4",
-    "graphql-tag": "^2.0.0"
+    "graphql-tag": "^2.0.0",
+    "react-select": "^1.2.1"
   },
   "scripts": {
     "clean": "rimraf dist/*",

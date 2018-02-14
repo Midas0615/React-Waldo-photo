@@ -8,11 +8,6 @@ export const fetchAllPizzasQuery = () => ({
       basePrice
       maxToppings
       toppings {
-        pizzaSize {
-          name
-          basePrice
-          maxToppings
-        }
         topping {
           name
           price
