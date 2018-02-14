@@ -1,14 +1,12 @@
 import React from 'react';
 import test from 'ava';
-
-import { PizzaView } from '../index';
+import { noop } from 'lodash';
+import PizzaView from '../index';
 
 const { expect, shallow } = testHelper;
-
 const testProps = {
-  formatMessage: () => 'something',
+  formatMessage: noop,
 };
-
 const shallowRenderer = (props = testProps) =>
   shallow(<PizzaView {...props} />);
 
