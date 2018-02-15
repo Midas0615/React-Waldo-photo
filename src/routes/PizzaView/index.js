@@ -8,6 +8,7 @@ import { LIST_PIZZA_REQUEST, GET_PIZZA_REQUEST } from 'redux/constants';
 
 import AddPizzaModal from './components/AddPizzaModal';
 import RemovePizzaModal from './components/RemovePizzaModal';
+import PriceModal from './components/PriceModal';
 
 class PizzaView extends Component {
   static propTypes = {
@@ -48,7 +49,9 @@ class PizzaView extends Component {
     this.state = {
       createModal: false,
       removeModal: false,
+      priceModal: false,
       selected: '',
+      cost: '',
     };
     this.calculatePrice = this.calculatePrice.bind(this);
   }
@@ -63,7 +66,23 @@ class PizzaView extends Component {
 
   toggleRemoveModal = key => this.setState({ removeModal: !this.state.removeModal, selected: !this.state.removeModal ? key : '' })
 
+  togglePriceModal = () => this.setState({ priceModal: !this.state.priceModal })
+
   calculatePrice() {
+    const { orderedPizzas } = this.props;
+    const { priceModal } = this.state;
+    let totalPrice = 0;
+    orderedPizzas.map((pizza) => {
+      let pizzaPrice = pizza.value.basePrice;
+      pizza.value.toppings.map((topping) => {
+        pizzaPrice += topping.value.topping.price;
+      });
+      totalPrice += pizzaPrice;
+    });
+    this.setState({
+      cost: totalPrice,
+      priceModal: !priceModal,
+    });
   }
 
   render() {
@@ -75,7 +94,9 @@ class PizzaView extends Component {
     const {
       createModal,
       removeModal,
+      priceModal,
       selected,
+      cost,
     } = this.state;
     return (
       <div>
@@ -129,8 +150,14 @@ class PizzaView extends Component {
               isOpen={removeModal}
               toggle={this.toggleRemoveModal}
               className="primary"
-              pizzaSizes={pizzaSizes}
               selectedkey={selected}
+            />
+            <PriceModal
+              isOpen={priceModal}
+              toggle={this.togglePriceModal}
+              className="primary"
+              pizzaSizes={pizzaSizes}
+              totalCost={cost}
             />
           </Row>
         </Container>
