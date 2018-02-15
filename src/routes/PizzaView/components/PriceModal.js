@@ -22,7 +22,7 @@ export class PriceModal extends Component {
 
   static defaultProps = {
     className: '',
-    totalCost: '',
+    totalCost: 0,
   };
 
   render() {
@@ -37,7 +37,7 @@ export class PriceModal extends Component {
           <ModalHeader toggle={toggle}>{formatMessage('Total Cost')}</ModalHeader>
           <ModalBody>
             <span>
-              {formatMessage('Total cost is')} {totalCost}
+              {formatMessage('Total cost is')} {totalCost.toFixed(2)}
             </span>
           </ModalBody>
           <ModalFooter>

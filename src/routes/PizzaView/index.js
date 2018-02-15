@@ -51,7 +51,7 @@ class PizzaView extends Component {
       removeModal: false,
       priceModal: false,
       selected: '',
-      cost: '',
+      cost: 0,
     };
     this.calculatePrice = this.calculatePrice.bind(this);
   }
@@ -120,11 +120,8 @@ class PizzaView extends Component {
                       {
                         orderedPizzas.map((pizza, index) => (
                           <Row key={index} className="topping">
-                            <Col md={8} className="text-left">
-                              <span>{pizza.key}</span>
-                            </Col>
-                            <Col md={2}>
-                              <span>{pizza.value.basePrice}</span>
+                            <Col md={10} className="text-left">
+                              <span>{pizza.value.name} {'--'} {pizza.key}</span>
                             </Col>
                             <Col md={2}>
                               <a onClick={this.toggleRemoveModal.bind(this, pizza.key)}>{formatMessage('Delete')}</a>

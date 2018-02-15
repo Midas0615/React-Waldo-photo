@@ -41,7 +41,9 @@
     .toppings {
       .topping {
         padding-left: 30px;
-        p {
+        display: flex;
+        justify-content: space-between;
+        label {
           display: inline-block;
         }
         .price {

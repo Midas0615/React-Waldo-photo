@@ -83,6 +83,7 @@ export class AddPizzaModal extends Component {
     const onePizza = {
       key: this.generateID(24),
       value: {
+        name: pizzaInfo.name,
         basePrice: pizzaInfo.basePrice,
         toppings: selectedTopping,
       },
@@ -95,7 +96,7 @@ export class AddPizzaModal extends Component {
     const { isOpen, toggle, className, pizzaSizes, formatMessage } = this.props;
     const { selectedOption } = this.state;
     const value = selectedOption && selectedOption.value;
-    const pizzaInfo = pizzaSizes[selectedOption.value];
+    const pizzaInfo = pizzaSizes[value];
     return (
       <Modal
         isOpen={isOpen}
@@ -109,6 +110,7 @@ export class AddPizzaModal extends Component {
               <CardBody>
                 <FormGroup className="mb-3">
                   <Select
+                    closeOnSelect
                     options={[
                       { value: 2, label: 'LARGE' },
                       { value: 1, label: 'MEDIUM' },
@@ -132,10 +134,11 @@ export class AddPizzaModal extends Component {
                           pizzaInfo.toppings.map((topping, index) => (
                             <div key={index} className="topping">
                               <Input
+                                id={index}
                                 type="checkbox"
                                 onClick={this.handleCheckBoxChange.bind(this, topping, index, pizzaInfo.maxToppings)}
                               />
-                              <p>{topping.topping.name}</p>
+                              <label htmlFor={index}>{topping.topping.name}</label>
                               <p className="price">{topping.topping.price}</p>
                             </div>
                           ))

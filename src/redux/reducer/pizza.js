@@ -81,7 +81,6 @@ export default function pizza(state = initialState, action) {
     case REMOVE_PIZZA_SUCCESS:
       const removedPizza = state.orderedPizzas;
       _.remove(removedPizza, currentObject => currentObject.key === action.payload);
-      console.log('reducer', removedPizza);
       return {
         ...state,
         orderedPizzas: removedPizza,
