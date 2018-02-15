@@ -6,6 +6,9 @@ import {
   GET_PIZZA_REQUEST,
   GET_PIZZA_SUCCESS,
   GET_PIZZA_FAILURE,
+  ADD_PIZZA_REQUEST,
+  ADD_PIZZA_SUCCESS,
+  ADD_PIZZA_FAILURE,
 } from '../constants';
 
 import client from '../../apolloClient';
@@ -13,6 +16,10 @@ import {
   fetchAllPizzasQuery,
   fetchPizzaByName,
 } from '../../graphql/queries/pizzaQueries';
+
+// function addValue(pizza) {
+//   console.log(pizza);
+// }
 
 function* getAllPizzaSizes() {
   try {
@@ -32,9 +39,19 @@ function* getPizzaSizeByName() {
   }
 }
 
+function* addPizza({ payload: { pizza } }) {
+  try {
+    // const response = yield call(addValue, pizza);
+    yield put({ type: ADD_PIZZA_SUCCESS, payload: pizza });
+  } catch (err) {
+    yield put({ type: ADD_PIZZA_FAILURE, payload: err });
+  }
+}
+
 export function* pizzaSaga() {
   yield [
     takeEvery(LIST_PIZZA_REQUEST, getAllPizzaSizes),
     takeEvery(GET_PIZZA_REQUEST, getPizzaSizeByName),
+    takeEvery(ADD_PIZZA_REQUEST, addPizza),
   ];
 }

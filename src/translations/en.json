@@ -1,3 +1,9 @@
 {
-  "Add": "Add"  
+  "Add": "Add",
+  "Pizza Ordering": "Pizza Ordering",
+  "There is no order yet": "There is no order yet",
+  "Max Toppings": "Max Toppings",
+  "Base Price": "Base Price",
+  "Checkout": "Checkout",
+  "Add Pizza": "Add Pizza"
 }

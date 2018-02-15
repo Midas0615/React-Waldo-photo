@@ -9,10 +9,31 @@
       font-weight: bold;
     }
   }
-  .list {
-    min-height: 50px;
-    border: 1px solid black;
+  .cart {
+    margin-top: 30px;
+    .empty {
+      padding: 50px;
+      text-align: center;
+    }
+    .topping {
+      padding: 20px;
+      p {
+        display: inline-block;
+      }
+      .name {
+        float: left;
+      }
+      .price {
+        float: right;
+      }
+    }
   }
+  .checkout-button {
+    margin-top: 30px;
+  }
+}
+
+.add-modal {
   .card {
     text-align: left;
     .data {

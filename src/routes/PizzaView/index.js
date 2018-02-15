@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Card, CardBody, Button, FormGroup, Form, Input } from 'reactstrap';
+import { Container, Row, Col, Card, Button } from 'reactstrap';
 import { injectIntl } from 'components/Intl';
-import Select from 'react-select';
+
 import { LIST_PIZZA_REQUEST, GET_PIZZA_REQUEST } from 'redux/constants';
+
+import AddPizzaModal from './components/AddPizzaModal';
 
 class PizzaView extends Component {
   static propTypes = {
@@ -18,11 +20,13 @@ class PizzaView extends Component {
         ]),
       }),
     ),
-    pizzaSizeByName: PropTypes.shape({
-      name: PropTypes.oneOfType([
-        PropTypes.string, PropTypes.number,
-      ]),
-    }),
+    orderedPizzas: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.oneOfType([
+          PropTypes.string, PropTypes.number,
+        ]),
+      }),
+    ),
   }
 
   static defaultProps = {
@@ -31,13 +35,15 @@ class PizzaView extends Component {
         name: 'small',
       },
     ],
-    pizzaSizeByName: {
-      name: 'small',
-    },
+    orderedPizzas: [
+      {
+        key: 'abc',
+      },
+    ],
   }
 
   state = {
-    selectedOption: '',
+    createModal: false,
   }
 
   componentDidMount() {
@@ -46,20 +52,18 @@ class PizzaView extends Component {
     getPizzaSizeByName();
   }
 
-  handleChange = (selectedOption) => {
-    this.setState({ selectedOption });
-  }
+  toggleCreateModal = () => this.setState({ createModal: !this.state.createModal })
 
   render() {
     const {
       formatMessage,
       pizzaSizes,
-      pizzaSizeByName,
+      orderedPizzas,
     } = this.props;
-    const { selectedOption } = this.state;
-    const value = selectedOption && selectedOption.value;
-    const pizzaInfo = pizzaSizes[selectedOption.value];
-    console.log(pizzaInfo, pizzaSizeByName);
+    const {
+      createModal,
+    } = this.state;
+    console.log('orderedPizzas', orderedPizzas);
     return (
       <div>
         <Container>
@@ -67,54 +71,40 @@ class PizzaView extends Component {
             <Col md={{ size: 8, offset: 2 }}>
               <div className="content-list">
                 <div className="title">
-                  <p>Pizza Ordering</p>
+                  <p>{formatMessage('Pizza Ordering')}</p>
                 </div>
-                <Card className="mx-4">
-                  <CardBody>
-                    <Form onSubmit={(e) => {
-                      e.preventDefault();
-                      // loginUser(Serializer.serialize(e.target, { hash: true }));
-                    }}>
-                      <FormGroup className="mb-3">
-                        <Select
-                          options={[
-                            { value: 2, label: 'LARGE' },
-                            { value: 1, label: 'MEDIUM' },
-                            { value: 0, label: 'SMALL' },
-                          ]}
-                          value={value}
-                          onChange={this.handleChange}
-                        />
-                        { pizzaInfo && (
-                          <div className="card">
-                            <div className="data">
-                              <p>Max Toppings</p>
-                              <p>{pizzaInfo.maxToppings === null ? 'unlimited' : pizzaInfo.maxToppings }</p>
-                            </div>
-                            <div className="data">
-                              <p>Base Price</p>
-                              <p>{pizzaInfo.basePrice}</p>
-                            </div>
-                            <div className="toppings">
-                              {
-                                pizzaInfo.toppings.map((topping, index) => (
-                                  <div key={index} className="topping">
-                                    <Input type="checkbox" />{' '}
-                                    <p>{topping.topping.name}</p>
-                                    <p className="price">{topping.topping.price}</p>
-                                  </div>
-                                ))
-                              }
-                            </div>
+                <div className="text-right mx-4">
+                  <Button color="primary" className="px-4" onClick={this.toggleCreateModal}>{formatMessage('Add')}</Button>
+                </div>
+                <Card className="mx-4 cart">
+                  {orderedPizzas.length === 0 ?
+                    <div className="empty">
+                      <span>{formatMessage('There is no order yet')}</span>
+                    </div>
+                    :
+                    <div>
+                      {
+                        orderedPizzas.map((pizza, index) => (
+                          <div key={index} className="topping">
+                            <p className="name">{pizza.key}</p>
+                            <p className="price">{pizza.value.basePrice}</p>
                           </div>
-                        )}
-                      </FormGroup>
-                      <Button type="submit" color="primary" className="px-4">{formatMessage('Add')}</Button>
-                    </Form>
-                  </CardBody>
+                        ))
+                      }
+                    </div>
+                  }
                 </Card>
+                <div className="text-center mx-4 checkout-button">
+                  <Button color="danger" className="px-4">{formatMessage('Checkout')}</Button>
+                </div>
               </div>
             </Col>
+            <AddPizzaModal
+              isOpen={createModal}
+              toggle={this.toggleCreateModal}
+              className="primary"
+              pizzaSizes={pizzaSizes}
+            />
           </Row>
         </Container>
       </div>
@@ -126,6 +116,7 @@ function mapStateToProps(state) {
   return {
     pizzaSizes: state.toJS().pizza.pizzaSizes,
     pizzaSizeByName: state.toJS().pizza.pizzaSizeByName,
+    orderedPizzas: state.toJS().pizza.orderedPizzas,
   };
 }
 

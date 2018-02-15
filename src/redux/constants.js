@@ -6,3 +6,7 @@ export const LIST_PIZZA_FAILURE = 'pizza/LIST_PIZZA_FAILURE';
 export const GET_PIZZA_REQUEST = 'pizza/GET_PIZZA_REQUEST';
 export const GET_PIZZA_SUCCESS = 'pizza/GET_PIZZA_SUCCESS';
 export const GET_PIZZA_FAILURE = 'pizza/GET_PIZZA_FAILURE';
+
+export const ADD_PIZZA_REQUEST = 'pizza/ADD_PIZZA_REQUEST';
+export const ADD_PIZZA_SUCCESS = 'pizza/ADD_PIZZA_SUCCESS';
+export const ADD_PIZZA_FAILURE = 'pizza/ADD_PIZZA_FAILURE';
