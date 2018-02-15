@@ -18,7 +18,6 @@ const initialState = {
   pizzaSizes: [],
   pizzaSizeByName: {},
   orderedPizzas: [],
-  pizzasRequesting: false,
 };
 
 export default function pizza(state = initialState, action) {
@@ -26,39 +25,32 @@ export default function pizza(state = initialState, action) {
     case LIST_PIZZA_REQUEST:
       return {
         ...state,
-        pizzasRequesting: true,
       };
     case LIST_PIZZA_SUCCESS:
       return {
         ...state,
         pizzaSizes: action.payload,
-        pizzasRequesting: false,
       };
     case LIST_PIZZA_FAILURE:
       return {
         ...state,
-        pizzasRequesting: false,
       };
     case GET_PIZZA_REQUEST:
       return {
         ...state,
-        pizzasRequesting: true,
       };
     case GET_PIZZA_SUCCESS:
       return {
         ...state,
         pizzaSizeByName: action.payload,
-        pizzasRequesting: false,
       };
     case GET_PIZZA_FAILURE:
       return {
         ...state,
-        pizzasRequesting: false,
       };
     case ADD_PIZZA_REQUEST:
       return {
         ...state,
-        pizzasRequesting: true,
       };
     case ADD_PIZZA_SUCCESS:
       const updatedPizza = state.orderedPizzas;
@@ -66,17 +58,14 @@ export default function pizza(state = initialState, action) {
       return {
         ...state,
         orderedPizzas: updatedPizza,
-        pizzasRequesting: false,
       };
     case ADD_PIZZA_FAILURE:
       return {
         ...state,
-        pizzasRequesting: false,
       };
     case REMOVE_PIZZA_REQUEST:
       return {
         ...state,
-        pizzasRequesting: true,
       };
     case REMOVE_PIZZA_SUCCESS:
       const removedPizza = state.orderedPizzas;
@@ -84,12 +73,10 @@ export default function pizza(state = initialState, action) {
       return {
         ...state,
         orderedPizzas: removedPizza,
-        pizzasRequesting: false,
       };
     case REMOVE_PIZZA_FAILURE:
       return {
         ...state,
-        pizzasRequesting: false,
       };
     default:
       return state;
