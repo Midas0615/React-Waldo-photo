@@ -57,16 +57,8 @@ export class RemovePizzaModal extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    pizzaSizes: state.toJS().pizza.pizzaSizes,
-    pizzaSizeByName: state.toJS().pizza.pizzaSizeByName,
-    orderedPizzas: state.toJS().pizza.orderedPizzas,
-  };
-}
-
 const mapDispatchToProps = dispatch => ({
   removePizza: key => dispatch({ type: REMOVE_PIZZA_REQUEST, payload: { key } }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(RemovePizzaModal));
+export default connect(null, mapDispatchToProps)(injectIntl(RemovePizzaModal));

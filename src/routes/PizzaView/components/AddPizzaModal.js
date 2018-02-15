@@ -43,7 +43,7 @@ export class AddPizzaModal extends Component {
   };
 
   state = {
-    selectedOption: '',
+    selectedOption: null,
     selectedTopping: [],
   }
 
@@ -59,7 +59,13 @@ export class AddPizzaModal extends Component {
         value: topping,
       };
       selectedTopping.push(item);
-      this.setState({ selectedTopping });
+      if (count !== null) {
+        if (selectedTopping.length <= count) {
+          this.setState({ selectedTopping });
+        }
+      } else {
+        this.setState({ selectedTopping });
+      }
     } else {
       _.remove(selectedTopping, currentObject => currentObject.key === index);
       this.setState({ selectedTopping });
@@ -94,7 +100,7 @@ export class AddPizzaModal extends Component {
 
   render() {
     const { isOpen, toggle, className, pizzaSizes, formatMessage } = this.props;
-    const { selectedOption } = this.state;
+    const { selectedOption, selectedTopping } = this.state;
     const value = selectedOption && selectedOption.value;
     const pizzaInfo = pizzaSizes[value];
     return (
@@ -131,17 +137,22 @@ export class AddPizzaModal extends Component {
                       </div>
                       <div className="toppings">
                         {
-                          pizzaInfo.toppings.map((topping, index) => (
-                            <div key={index} className="topping">
-                              <Input
-                                id={index}
-                                type="checkbox"
-                                onClick={this.handleCheckBoxChange.bind(this, topping, index, pizzaInfo.maxToppings)}
-                              />
-                              <label htmlFor={index}>{topping.topping.name}</label>
-                              <p className="price">{topping.topping.price}</p>
-                            </div>
-                          ))
+                          pizzaInfo.toppings.map((topping, index) => {
+                            const selected = selectedTopping.find(t => t.key === index);
+                            const possibleLength = pizzaInfo.maxToppings === null ? 10 : pizzaInfo.maxToppings;
+                            return (
+                              <div key={index} className="topping">
+                                <Input
+                                  id={index}
+                                  type="checkbox"
+                                  disabled={!selected && selectedTopping.length >= possibleLength}
+                                  onClick={this.handleCheckBoxChange.bind(this, topping, index, pizzaInfo.maxToppings)}
+                                />
+                                <label htmlFor={index}>{topping.topping.name}</label>
+                                <p className="price">{topping.topping.price}</p>
+                              </div>
+                            );
+                          })
                         }
                       </div>
                     </div>
@@ -151,7 +162,7 @@ export class AddPizzaModal extends Component {
             </Card>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" className="px-4" onClick={this.addPizza.bind(this, pizzaInfo)}>{formatMessage('Add')}</Button>
+            <Button color="primary" className="px-4" disabled={value === null} onClick={this.addPizza.bind(this, pizzaInfo)}>{formatMessage('Add')}</Button>
           </ModalFooter>
         </div>
       </Modal>
@@ -162,8 +173,6 @@ export class AddPizzaModal extends Component {
 function mapStateToProps(state) {
   return {
     pizzaSizes: state.toJS().pizza.pizzaSizes,
-    pizzaSizeByName: state.toJS().pizza.pizzaSizeByName,
-    orderedPizzas: state.toJS().pizza.orderedPizzas,
   };
 }
 

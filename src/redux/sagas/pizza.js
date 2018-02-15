@@ -20,10 +20,6 @@ import {
   fetchPizzaByName,
 } from '../../graphql/queries/pizzaQueries';
 
-// function addValue(pizza) {
-//   console.log(pizza);
-// }
-
 function* getAllPizzaSizes() {
   try {
     const response = yield call(client.query, fetchAllPizzasQuery());
