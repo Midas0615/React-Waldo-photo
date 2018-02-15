@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   LIST_PIZZA_REQUEST,
   LIST_PIZZA_SUCCESS,
@@ -8,6 +9,9 @@ import {
   ADD_PIZZA_REQUEST,
   ADD_PIZZA_SUCCESS,
   ADD_PIZZA_FAILURE,
+  REMOVE_PIZZA_REQUEST,
+  REMOVE_PIZZA_SUCCESS,
+  REMOVE_PIZZA_FAILURE,
 } from '../constants';
 
 const initialState = {
@@ -65,6 +69,25 @@ export default function pizza(state = initialState, action) {
         pizzasRequesting: false,
       };
     case ADD_PIZZA_FAILURE:
+      return {
+        ...state,
+        pizzasRequesting: false,
+      };
+    case REMOVE_PIZZA_REQUEST:
+      return {
+        ...state,
+        pizzasRequesting: true,
+      };
+    case REMOVE_PIZZA_SUCCESS:
+      const removedPizza = state.orderedPizzas;
+      _.remove(removedPizza, currentObject => currentObject.key === action.payload);
+      console.log('reducer', removedPizza);
+      return {
+        ...state,
+        orderedPizzas: removedPizza,
+        pizzasRequesting: false,
+      };
+    case REMOVE_PIZZA_FAILURE:
       return {
         ...state,
         pizzasRequesting: false,

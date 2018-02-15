@@ -9,6 +9,9 @@ import {
   ADD_PIZZA_REQUEST,
   ADD_PIZZA_SUCCESS,
   ADD_PIZZA_FAILURE,
+  REMOVE_PIZZA_REQUEST,
+  REMOVE_PIZZA_SUCCESS,
+  REMOVE_PIZZA_FAILURE,
 } from '../constants';
 
 import client from '../../apolloClient';
@@ -41,10 +44,17 @@ function* getPizzaSizeByName() {
 
 function* addPizza({ payload: { pizza } }) {
   try {
-    // const response = yield call(addValue, pizza);
     yield put({ type: ADD_PIZZA_SUCCESS, payload: pizza });
   } catch (err) {
     yield put({ type: ADD_PIZZA_FAILURE, payload: err });
+  }
+}
+
+function* removePizza({ payload: { key } }) {
+  try {
+    yield put({ type: REMOVE_PIZZA_SUCCESS, payload: key });
+  } catch (err) {
+    yield put({ type: REMOVE_PIZZA_FAILURE, payload: err });
   }
 }
 
@@ -53,5 +63,6 @@ export function* pizzaSaga() {
     takeEvery(LIST_PIZZA_REQUEST, getAllPizzaSizes),
     takeEvery(GET_PIZZA_REQUEST, getPizzaSizeByName),
     takeEvery(ADD_PIZZA_REQUEST, addPizza),
+    takeEvery(REMOVE_PIZZA_REQUEST, removePizza),
   ];
 }

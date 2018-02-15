@@ -7,6 +7,7 @@ import { injectIntl } from 'components/Intl';
 import { LIST_PIZZA_REQUEST, GET_PIZZA_REQUEST } from 'redux/constants';
 
 import AddPizzaModal from './components/AddPizzaModal';
+import RemovePizzaModal from './components/RemovePizzaModal';
 
 class PizzaView extends Component {
   static propTypes = {
@@ -42,8 +43,14 @@ class PizzaView extends Component {
     ],
   }
 
-  state = {
-    createModal: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      createModal: false,
+      removeModal: false,
+      selected: '',
+    };
+    this.calculatePrice = this.calculatePrice.bind(this);
   }
 
   componentDidMount() {
@@ -54,6 +61,11 @@ class PizzaView extends Component {
 
   toggleCreateModal = () => this.setState({ createModal: !this.state.createModal })
 
+  toggleRemoveModal = key => this.setState({ removeModal: !this.state.removeModal, selected: !this.state.removeModal ? key : '' })
+
+  calculatePrice() {
+  }
+
   render() {
     const {
       formatMessage,
@@ -62,8 +74,9 @@ class PizzaView extends Component {
     } = this.props;
     const {
       createModal,
+      removeModal,
+      selected,
     } = this.state;
-    console.log('orderedPizzas', orderedPizzas);
     return (
       <div>
         <Container>
@@ -85,17 +98,24 @@ class PizzaView extends Component {
                     <div>
                       {
                         orderedPizzas.map((pizza, index) => (
-                          <div key={index} className="topping">
-                            <p className="name">{pizza.key}</p>
-                            <p className="price">{pizza.value.basePrice}</p>
-                          </div>
+                          <Row key={index} className="topping">
+                            <Col md={8} className="text-left">
+                              <span>{pizza.key}</span>
+                            </Col>
+                            <Col md={2}>
+                              <span>{pizza.value.basePrice}</span>
+                            </Col>
+                            <Col md={2}>
+                              <a onClick={this.toggleRemoveModal.bind(this, pizza.key)}>{formatMessage('Delete')}</a>
+                            </Col>
+                          </Row>
                         ))
                       }
                     </div>
                   }
                 </Card>
                 <div className="text-center mx-4 checkout-button">
-                  <Button color="danger" className="px-4">{formatMessage('Checkout')}</Button>
+                  <Button color="danger" className="px-4" disabled={orderedPizzas.length === 0} onClick={this.calculatePrice}>{formatMessage('Checkout')}</Button>
                 </div>
               </div>
             </Col>
@@ -104,6 +124,13 @@ class PizzaView extends Component {
               toggle={this.toggleCreateModal}
               className="primary"
               pizzaSizes={pizzaSizes}
+            />
+            <RemovePizzaModal
+              isOpen={removeModal}
+              toggle={this.toggleRemoveModal}
+              className="primary"
+              pizzaSizes={pizzaSizes}
+              selectedkey={selected}
             />
           </Row>
         </Container>

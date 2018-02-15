@@ -17,14 +17,9 @@
     }
     .topping {
       padding: 20px;
-      p {
-        display: inline-block;
-      }
-      .name {
-        float: left;
-      }
-      .price {
-        float: right;
+      a {
+        color: red;
+        cursor: pointer;
       }
     }
   }

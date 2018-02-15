@@ -5,5 +5,10 @@
   "Max Toppings": "Max Toppings",
   "Base Price": "Base Price",
   "Checkout": "Checkout",
-  "Add Pizza": "Add Pizza"
+  "Add Pizza": "Add Pizza",
+  "Delete": "Delete",
+  "Remove": "Remove",
+  "Remove Pizza": "Remove Pizza",
+  "Cancel": "Cancel",
+  "Do you want to remove this pizza?": "Do you want to remove this pizza?"
 }
